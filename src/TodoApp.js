@@ -1,21 +1,38 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import TodoList from './TodoList.jsx';
+import TodoForm from './TodoForm.jsx';
+var createReactClass = require('create-react-class');
 
-class TodoApp extends Component {
+var TodoApp = createReactClass ({
+  getInitialState(){
+      return{
+        todos: [
+          {
+            id: 1,
+            text: 'Walk the dog'
+          },
+          {
+            id: 2,
+            text: 'Clean the yard'
+          }
+        ]
+      };
+  },
+
+  handleAddTodo(text){
+    alert('new todo: '+text);
+  },
   render() {
+    var {todos} = this.state;
     return (
       <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <TodoList todos={todos}/>
+        <TodoForm onAddTodo={this.handleAddTodo}/>
       </div>
     );
   }
-}
+});
 
 export default TodoApp;
