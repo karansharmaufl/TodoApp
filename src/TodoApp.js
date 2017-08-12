@@ -1,43 +1,45 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import $ from "jquery";
 import TodoList from './TodoList.jsx';
 import TodoForm from './TodoForm.jsx';
 import TodoSearch from './TodoSearch.jsx';
-import TodoApi from './api/TodoApi.jsx';
+//import TodoApi from './TodoApi.jsx';
+//var TodoApi = require('./TodoApi.jsx');
 var uuid = require('node-uuid');
 var createReactClass = require('create-react-class');
 
 var TodoApp = createReactClass ({
+
+  setTodos(todos){
+        if($.isArray(todos)){
+            localStorage.setItem('todos', JSON.stringify(todos));
+            return todos;
+        }
+    },
+    getTodos(){
+        var stringTodos = localStorage.getItem('todos');
+        var todos = [];
+        try{
+            todos=JSON.parse(stringTodos);
+        }
+        catch(e){   
+        }
+        
+        return $.isArray(todos) ? todos: [] ;
+    },
+
   getInitialState(){
       return{
         showCompleted: false,
         searchText: '',
-        todos: [
-          {
-            id: uuid(),
-            text: 'Walk the dog',
-            completed: true
-
-          },
-          {
-            id: uuid(),
-            text: 'Clean the yard',
-            completed: false
-          },
-          {
-            id: uuid(),
-            text: 'Eat',
-            completed: true
-
-          },
-          {
-            id: uuid(),
-            text: 'Sleep',
-            completed: false
-          }
-        ]
+        todos: this.getTodos()
       };
+  },
+
+  componentDidUpdate(){
+      this.setTodos(this.state.todos);
   },
 
   handleAddTodo(text){
