@@ -16,8 +16,13 @@ var TodoForm = createReactClass({
     render(){
         return(
             <form onSubmit={this.handleSubmit}> 
-            <input type="text" ref="todoText" placeholder="Enter new todo"></input>
-            <button className="button expanded">+ Add TODO</button>
+            <div className="form-group">
+                <input type="text" className="form-control" ref="todoText" placeholder="Enter new todo"></input>
+                <div>
+                    <button className="btn btn-primary btn-lg btn-block">+ Add TODO</button>
+                </div>
+            </div>
+            
             </form>
         );
     } 

@@ -2,10 +2,13 @@ import React, { Component } from 'react';
 
 class Todo extends React.Component{
     render(){
-        var{id,text} = this.props;
+        var{id,text,completed} = this.props;
         return(
-            <div>   
-                <h1>{id}. {text}</h1>
+            <div onClick={() => {
+                    this.props.onToggle(id);
+                }}>  
+                <input type="checkbox" checked={completed}/> 
+                {text}
             </div>
         )
     }

@@ -4,6 +4,7 @@ import './App.css';
 import TodoList from './TodoList.jsx';
 import TodoForm from './TodoForm.jsx';
 import TodoSearch from './TodoSearch.jsx';
+import TodoApi from './api/TodoApi.jsx';
 var uuid = require('node-uuid');
 var createReactClass = require('create-react-class');
 
@@ -15,11 +16,25 @@ var TodoApp = createReactClass ({
         todos: [
           {
             id: uuid(),
-            text: 'Walk the dog'
+            text: 'Walk the dog',
+            completed: true
+
           },
           {
             id: uuid(),
-            text: 'Clean the yard'
+            text: 'Clean the yard',
+            completed: false
+          },
+          {
+            id: uuid(),
+            text: 'Eat',
+            completed: true
+
+          },
+          {
+            id: uuid(),
+            text: 'Sleep',
+            completed: false
           }
         ]
       };
@@ -30,7 +45,8 @@ var TodoApp = createReactClass ({
        todos:[
          ...this.state.todos,{
            id: uuid(),
-           text: text
+           text: text,
+           completed: false
          }
        ] 
     });
@@ -42,12 +58,25 @@ var TodoApp = createReactClass ({
       searchText: searchText.toLowerCase()
     });
   },
+
+  handleToggle(id){
+    var updatedTodos=this.state.todos.map((todo) => {
+        if(todo.id === id){
+          todo.completed = !todo.completed;
+        }
+        return todo;
+    });
+    this.setState({
+      todos: updatedTodos
+    });
+  },
+  
   render() {
     var {todos} = this.state;
     return (
       <div className="App">
         <TodoSearch onSearch={this.handleSearch}/>
-        <TodoList todos={todos}/>
+        <TodoList todos={todos} onToggle={this.handleToggle}/>
         <TodoForm onAddTodo={this.handleAddTodo}/>
       </div>
     );
