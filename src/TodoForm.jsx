@@ -15,15 +15,16 @@ var TodoForm = createReactClass({
     },
     render(){
         return(
-            <form onSubmit={this.handleSubmit}> 
-            <div className="form-group">
+         <form onSubmit={this.handleSubmit}> 
+
+            <div className="form-group container__footer">
                 <input type="text" className="form-control" ref="todoText" placeholder="Enter new todo"></input>
-                <div>
+                <div className="container__addbutton">
                     <button className="btn btn-primary btn-lg btn-block">+ Add TODO</button>
                 </div>
             </div>
             
-            </form>
+        </form>
         );
     } 
 });
