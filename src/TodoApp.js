@@ -1,34 +1,68 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
 import $ from "jquery";
 import TodoList from './TodoList.jsx';
 import TodoForm from './TodoForm.jsx';
 import TodoSearch from './TodoSearch.jsx';
-//import Foundation from 'foundation-sites/dist/foundation.min.js';
-//import TodoApi from './TodoApi.jsx';
-//var TodoApi = require('./TodoApi.jsx');
 var uuid = require('node-uuid');
 var createReactClass = require('create-react-class');
 var moment = require('moment');
+var axios = require('axios');
 var TodoApp = createReactClass ({
 
+  // setTodos(todos){
+  //       if($.isArray(todos)){
+  //           localStorage.setItem('todos', JSON.stringify(todos));
+  //           return todos;
+  //       }
+  //   },
+
   setTodos(todos){
-        if($.isArray(todos)){
-            localStorage.setItem('todos', JSON.stringify(todos));
-            return todos;
-        }
-    },
+    if($.isArray(todos)){
+      axios.post('http://localhost:8080/api/todos',{
+        todos
+      }).then(function(response){
+        console.log(response);
+      })
+      return todos;
+  } 
+  },
+    // getTodos(){
+    //     var obj;
+    //     var stringTodos = localStorage.getItem('todos');
+    //     var todos = [];
+    //     try{
+    //         todos=JSON.parse(stringTodos);
+    //     }
+    //     catch(e){   
+    //     }
+    //     console.log("Out here --------------------------------------");
+    //     axios.get('http://localhost:8080/api/todos')
+    //           .then(function(response){
+    //             console.log(response.data);
+    //             obj = response.data.records;
+    //             var arr = [];
+    //             for (var x in obj)
+    //               arr.push(obj[x])
+    //             console.log("Print obj",arr);
+    //           })
+    //     return $.isArray(todos) ? todos: [] ;
+    // },
+
     getTodos(){
-        var stringTodos = localStorage.getItem('todos');
+      var todos = [];
+      var obj;
+      axios.get('http://localhost:8080/api/todos')
+      .then(function(response){
+        console.log(response.data);
+        obj = response.data.records;
         var todos = [];
-        try{
-            todos=JSON.parse(stringTodos);
-        }
-        catch(e){   
-        }
-        
+        for (var x in obj)
+          todos.push(obj[x])
+        console.log("Inside",todos.length);
         return $.isArray(todos) ? todos: [] ;
+      })
+      return $.isArray(todos) ? todos: [] ;
     },
 
     filterTodos(todos, showCompleted, searchText){

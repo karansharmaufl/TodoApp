@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 var createReactClass = require('create-react-class');
 
 var TodoForm = createReactClass({

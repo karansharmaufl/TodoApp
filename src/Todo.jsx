@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
+import React from 'react';
 var moment = require('moment');
 
 class Todo extends React.Component{
 
     getCreatedAt(){
-        var{id,text,completed,createdAt,completedAt} = this.props;
+        var{completed,createdAt,completedAt} = this.props;
         var message = 'Created at ';
         var timeStampCreation= createdAt;
         var timeStampCompletion= completedAt;
         if(completed){
            timeStampCompletion = moment().unix(); 
         }
-        console.log('debug'+completed);
+        //console.log('debug'+completed);
         timeStampCreation = message + moment.unix(timeStampCreation).format('MMM Do YYYY @h:mm a');
         timeStampCompletion = 'Completed at ' + moment.unix(timeStampCompletion).format('MMM Do YYYY @h:mm a');
         if(completed){
@@ -23,9 +23,9 @@ class Todo extends React.Component{
     }
     
     render(){
-        var{id,text,completed,createdAt,completedAt} = this.props;
+        var{id,text,completed} = this.props;
         var toDoClassName = completed ? "todo todo-completed" : "todo";
-         console.log("debughere: "+ toDoClassName);
+        //console.log("debughere: "+ toDoClassName);
         return(
 
             <div className={toDoClassName} onClick={() => {

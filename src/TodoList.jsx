@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import TodoApp from './TodoApp.js';
+import React from 'react';
 import Todo from './Todo.jsx'
 
 class TodoList extends React.Component{
