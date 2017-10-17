@@ -7,6 +7,10 @@ app.use(cors())
 app.use(express.static('static'));
 app.use(bodyParser.json());
 
+const MongoClient = require('mongodb').MongoClient;
+let db;
+
+
 
 const todos = [
     {
@@ -21,19 +25,40 @@ const todos = [
 ];
 
 app.get('/api/todos', (req, res) => {
-    const metadata = {total_count: todos.length};
-    res.json({_metadata: metadata, records: todos})
+    db.collection('todos').find().toArray()
+        .then(todos => {
+            const metadata = {total_count: todos.length};
+            res.json({_metadata: metadata, records: todos})
+        }).catch(error => {
+            console.log(error);
+            res.status(500).json({ message: `Internal Server Error: ${error}` });
+          });
+    
 })
 
 app.post('/api/todos', (req, res) => {
     const newTodo = req.body;
-    newTodo.id = todos.length +1 ;
+    db.collection('todos').insertOne(newTodo).then(result =>
+        db.collection('todos').find({ _id: result.insertedId }).limit(1).next()
+      ).then(newTodo => {
+        res.json(newTodo);
+      }).catch(error => {
+        console.log(error);
+        res.status(500).json({ message: `Internal Server Error: ${error}` });
+      });
+    });
 
-    todos.push(newTodo);
-    res.json(newTodo);
 
-})
 
-app.listen(8080, () => {
-    console.log('App started on port 8080');
+MongoClient.connect('mongodb://localhost/todos').then(connection => {
+    db = connection;
+    app.listen(8080, () => {
+        console.log('App started on port 8080');
+    })
+}).catch(error => {
+    console.log('ERROR:',error);
 });
+
+// app.listen(8080, () => {
+//     console.log('App started on port 8080');
+// });
