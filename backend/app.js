@@ -10,20 +10,6 @@ app.use(bodyParser.json());
 const MongoClient = require('mongodb').MongoClient;
 let db;
 
-
-
-const todos = [
-    {
-        id:1,
-        text: 'Walk the dog'
-    },
-
-    {
-        id: 2,
-        text: 'Go to the gym'
-    }
-];
-
 app.get('/api/todos', (req, res) => {
     db.collection('todos').find().toArray()
         .then(todos => {
